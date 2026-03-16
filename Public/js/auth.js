@@ -1,28 +1,55 @@
-const API = "/api/auth/login";
+const api = "http://localhost:3000/api/auth";
 
-const form = document.getElementById("loginForm");
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+if (registerForm) {
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+    const data = Object.fromEntries(formData);
 
-  const data = Object.fromEntries(new FormData(form));
+    try {
+      const res = await fetch(`${api}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      alert(result.message);
 
-  const res = await fetch(API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+      if (res.ok) {
+        window.location.href = "login.html";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   });
+}
 
-  const resultado = await res.json();
+if (loginForm) {
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(loginForm);
+    const data = Object.fromEntries(formData);
 
-  if (resultado.token) {
-    localStorage.setItem("token", resultado.token);
-    alert("Login exitoso");
+    try {
+      const res = await fetch(`${api}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
 
-    window.location.href = "/dashboard.html";
-  } else {
-    alert(resultado.mensaje);
-  }
-});
+      if (result.token) {
+        // Guarda token storage
+        localStorage.setItem("token", result.token);
+        window.location.href = "dashboard.html";
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+}

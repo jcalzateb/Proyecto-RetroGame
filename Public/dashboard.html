@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RetroGame - Panel de Control</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <h2>RetroGame</h2>
+        <p class="subtitle">Panel de Administrador</p>
+
+        <ul>
+          <li onclick="cargarProductos()">Inventario</li>
+          <li onclick="formCrear()">Agregar Producto</li>
+          <li onclick="cerrarSesion()">Cerrar Sesión</li>
+        </ul>
+      </aside>
+
+      <main class="content">
+        <h1>Gestión de Productos</h1>
+        <div id="contenido"></div>
+      </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

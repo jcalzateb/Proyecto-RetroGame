@@ -6,7 +6,7 @@ import {
 
 const router = Router();
 
-router.post("/registro", registrarUsuario);
+router.post("/register", registrarUsuario);
 router.post("/login", iniciar_Sesion);
 
 export default router;
