@@ -22,10 +22,9 @@ app.use("/api/auth", authRoutes);
 
 conectar();
 
-app.get("/", (req, res) => {
-  res.send("API funcionando");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
-
 const port = process.env.PORT || 3000;
 
 app.listen(port || 3000, () => {
