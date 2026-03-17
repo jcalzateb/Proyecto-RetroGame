@@ -1,4 +1,4 @@
-const api = "http://localhost:3000/api/auth";
+const api = "/api/auth";
 
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
