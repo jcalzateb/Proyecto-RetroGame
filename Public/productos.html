@@ -9,22 +9,13 @@
   <body>
     <h1>Catálogo RetroGame</h1>
 
-    <h2>Agregar Producto</h2>
-
-    <form id="formProducto">
-      <input type="text" name="nombre" placeholder="Nombre" required />
-      <input type="text" name="descripcion" placeholder="Descripción" />
-      <input type="number" name="precio" placeholder="Precio" required />
-      <input type="text" name="categoria" placeholder="Consola o Juego" />
-      <input type="text" name="tipo" placeholder="Retro o Moderno" />
-      <input type="number" name="stock" placeholder="Stock" />
-
-      <button type="submit">Guardar</button>
-    </form>
+    <input
+      type="text"
+      placeholder="Buscar producto..."
+      oninput="filtrar(this.value)"
+    />
 
     <hr />
-
-    <h2>Lista de Productos</h2>
 
     <div id="productos"></div>
 

@@ -22,9 +22,9 @@ app.use("/api/auth", authRoutes);
 
 conectar();
 
-app.get("/", (req, res) => {
+/* app.get("/", (req, res) => {
   res.send("API funcionando");
-});
+}); */
 
 const port = process.env.PORT || 3000;
 
