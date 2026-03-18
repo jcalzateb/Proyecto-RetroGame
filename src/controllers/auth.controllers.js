@@ -81,11 +81,13 @@ export const actualizarUsuario = async (req, res) => {
   try {
     const { usuario, telefono, direccion, rol } = req.body;
 
-    const usuarioActualizado = await usuarios.findByIdAndUpdate(
-      req.params.id,
-      { usuario, telefono, direccion, rol },
-      { returnDocument: "after" }, // Para que nos devuelva ya actualizado
-    );
+    const usuarioActualizado = await usuarios
+      .findByIdAndUpdate(
+        req.params.id,
+        { usuario, telefono, direccion, rol },
+        { returnDocument: "after" }, // Para que nos devuelva ya actualizado
+      )
+      .select("-password");
     res.json(usuarioActualizado);
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar usuario" });
