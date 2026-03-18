@@ -1,4 +1,5 @@
 const API = "/api/productos";
+const API_USUARIOS = "/api/auth/usuarios";
 const contenido = document.getElementById("contenido");
 
 function verificarAuth() {
@@ -20,6 +21,7 @@ const headers = {
 };
 
 let productosGlobales = [];
+let usuariosGlobales = [];
 
 function cerrarSesion() {
   localStorage.removeItem("token");
@@ -85,7 +87,7 @@ function formCrear() {
       <input name="tipo" placeholder="Tipo">
 
      <button type="submit" class="btn-primary">Guardar</button>
-<button type="button" class="btn-cancel" onclick="cargarProductos()">Cancelar</button>
+     <button type="button" class="btn-cancel" onclick="cargarProductos()">Cancelar</button>
     </form>
   `;
 
@@ -128,7 +130,7 @@ function formEditar(id) {
       <input name="tipo" value="${p.tipo || ""}">
 
       <button type="submit" class="btn-primary">Actualizar</button>
-<button type="button" class="btn-cancel" onclick="cargarProductos()">Cancelar</button>
+      <button type="button" class="btn-cancel" onclick="cargarProductos()">Cancelar</button>
     </form>
   `;
 
@@ -171,3 +173,80 @@ async function eliminar(id) {
 }
 
 cargarProductos();
+
+async function cargarUsuarios() {
+  try {
+    const res = await fetch(API_USUARIOS, { headers });
+    usuariosGlobales = await res.json();
+
+    contenido.innerHTML = `
+      <h2>Gestión de Administradores</h2>
+      <div class="grid"> 
+        ${usuariosGlobales
+          .map(
+            (u) => `
+          <div class="card">
+            <h3>${u.usuario}</h3>
+            <p>${u.email}</p>
+            <p>${u.telefono || "Sin teléfono"}</p>
+            <p>${u.direccion || "Sin dirección"}</p>
+            <p>Rol: ${u.rol || "Admin"}</p>
+
+            <div class="acciones">
+              <button class="btn-edit" onclick="formEditarUsuario('${u._id}')">Editar</button>
+              <button class="btn-delete" onclick="eliminarUsuario('${u._id}')">Eliminar</button>
+            </div>
+          </div>
+        `,
+          )
+          .join("")}
+      </div>
+    `;
+  } catch (error) {
+    console.error("Error cargando usuarios:", error);
+  }
+}
+
+function formEditarUsuario(id) {
+  const u = usuariosGlobales.find((x) => x._id === id);
+
+  contenido.innerHTML = `
+    <h2>Editar Usuario</h2>
+    <form id="formUsuario" class="form">
+      <input name="usuario" value="${u.usuario}" placeholder="Nombre Completo" required>
+      <input name="email" value="${u.email}" readonly title="El correo no se puede cambiar" style="opacity: 0.6; cursor: not-allowed;">
+      <input name="telefono" value="${u.telefono || ""}" placeholder="Número de celular">
+      <input name="direccion" value="${u.direccion || ""}" placeholder="Dirección">
+      <input name="rol" value="${u.rol || "Admin"}" placeholder="Rol en el sistema">
+
+      <button type="submit" class="btn-primary">Actualizar Datos</button>
+      <button type="button" class="btn-cancel" onclick="cargarUsuarios()">Cancelar</button>
+    </form>
+  `;
+
+  document
+    .getElementById("formUsuario")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target));
+
+      await fetch(`${API_USUARIOS}/${id}`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify(data),
+      });
+
+      cargarUsuarios();
+    });
+}
+
+async function eliminarUsuario(id) {
+  if (!confirm("¿Estás seguro de eliminar este usuario?")) return;
+
+  await fetch(`${API_USUARIOS}/${id}`, {
+    method: "DELETE",
+    headers,
+  });
+
+  cargarUsuarios();
+}

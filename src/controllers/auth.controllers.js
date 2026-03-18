@@ -67,3 +67,36 @@ export const iniciar_Sesion = async (req, res) => {
     });
   }
 };
+
+export const obtenerUsuarios = async (req, res) => {
+  try {
+    const listaUsuarios = await usuarios.find({}, { password: 0 });
+    res.json(listaUsuarios);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener usuarios" });
+  }
+};
+
+export const actualizarUsuario = async (req, res) => {
+  try {
+    const { usuario, telefono, direccion, rol } = req.body;
+
+    const usuarioActualizado = await usuarios.findByIdAndUpdate(
+      req.params.id,
+      { usuario, telefono, direccion, rol },
+      { returnDocument: "after" }, // Para que nos devuelva ya actualizado
+    );
+    res.json(usuarioActualizado);
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar usuario" });
+  }
+};
+
+export const eliminarUsuario = async (req, res) => {
+  try {
+    await usuarios.findByIdAndDelete(req.params.id);
+    res.json({ message: "Usuario eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar usuario" });
+  }
+};

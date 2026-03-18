@@ -173,13 +173,13 @@ body::before {
   background: #c300ff;
 }
 
-.acciones {
+.form .acciones {
   display: flex;
   gap: 5px;
   margin-top: 10px;
 }
 
-.btn-primary {
+.form .btn-primary {
   background: #a200ff;
   color: white;
   border: none;
@@ -190,12 +190,12 @@ body::before {
   transition: 0.3s;
 }
 
-.btn-primary:hover {
+.form .btn-primary:hover {
   background: #c300ff;
   box-shadow: 0 0 10px #6500a0;
 }
 
-.btn-cancel {
+.form .btn-cancel {
   background: transparent;
   border: 1px solid #00ccff;
   color: #00ccff;
@@ -206,6 +206,7 @@ body::before {
   transition: 0.3s;
 }
 
-.btn-cancel:hover {
+.form .btn-cancel:hover {
   background: #00ccff;
+  color: white;
 }

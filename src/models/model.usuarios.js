@@ -14,6 +14,9 @@ const usuarioSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  telefono: { type: String, default: "" },
+  direccion: { type: String, default: "" },
+  rol: { type: String, default: "Admin" },
 });
 
 export default mongoose.model("usuarios", usuarioSchema);
